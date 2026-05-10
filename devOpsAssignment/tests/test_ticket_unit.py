@@ -1,7 +1,7 @@
 import pytest
-from users.models import User
-from tickets.models import Ticket
 from model_bakery import baker
+from users.models import User
+
 
 @pytest.fixture
 def luser(db):

@@ -25,7 +25,7 @@ jobs:
     - uses: astral-sh/ruff-action@v3
     - name: Ruff
       run: |
-        ruff check --fix --output-format=github
+        ruff check --output-format=github
     - name: Test 
       run: |
         pytest
