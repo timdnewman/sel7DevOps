@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% load bootstrap5 %}
+
+{% block title %}Raise a ticket — Ticket System{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-8">
+    <h1 class="h3 mb-4">Raise a ticket</h1>
+
+    <form method="post" novalidate>
+      {% csrf_token %}
+      {% bootstrap_form form %}
+      <button type="submit" class="btn btn-primary">Submit</button>
+      <a href="{% url 'tickets:list' %}" class="btn btn-link">Cancel</a>
+    </form>
+  </div>
+</div>
+{% endblock %}

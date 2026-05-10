@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% load bootstrap5 %}
+
+{% block title %}Ticket #{{ ticket.pk }} — Ticket System{% endblock %}
+
+{% block content %}
+<a href="{% url 'tickets:list' %}" class="btn btn-link ps-0 mb-2">&larr; Back to tickets</a>
+
+<div class="card">
+  <div class="card-body">
+    <div class="d-flex justify-content-between align-items-start">
+      <h1 class="h4 mb-1">Ticket #{{ ticket.pk }}</h1>
+      <span class="badge bg-{% if ticket.status == 'opened' %}secondary{% elif ticket.status == 'assigned' %}info{% elif ticket.status == 'working' %}warning text-dark{% else %}success{% endif %} fs-6">
+        {{ ticket.get_status_display }}
+      </span>
+    </div>
+    <p class="text-muted mb-4">
+      Raised by <strong>{{ ticket.name }}</strong>
+      (account: {{ ticket.submitted_by.username }})
+      on {{ ticket.created_at|date:"Y-m-d H:i" }}
+    </p>
+
+    <dl class="row">
+      <dt class="col-sm-3">Area</dt>
+      <dd class="col-sm-9">{{ ticket.get_area_display }}</dd>
+
+      <dt class="col-sm-3">Severity</dt>
+      <dd class="col-sm-9">{{ ticket.get_severity_display }}</dd>
+
+      <dt class="col-sm-3">Created</dt>
+      <dd class="col-sm-9">{{ ticket.created_at|date:"Y-m-d H:i:s" }}</dd>
+
+      <dt class="col-sm-3">Last updated</dt>
+      <dd class="col-sm-9">{{ ticket.updated_at|date:"Y-m-d H:i:s" }}</dd>
+
+      <dt class="col-sm-3">Description</dt>
+      <dd class="col-sm-9" style="white-space:pre-wrap">{{ ticket.description }}</dd>
+    </dl>
+
+    {% if user.is_manager %}
+      <hr>
+      <h2 class="h5">Update status</h2>
+      <form method="post" action="{% url 'tickets:status_update' ticket.pk %}" class="row g-2 align-items-end">
+        {% csrf_token %}
+        <div class="col-auto">
+          {% bootstrap_form status_form show_label=False %}
+        </div>
+        <div class="col-auto">
+          <button type="submit" class="btn btn-primary">Save</button>
+        </div>
+      </form>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

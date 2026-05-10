@@ -28,4 +28,5 @@ urlpatterns = [
         name="root",
     ),
     path("accounts/", include("users.urls")),
+    path("tickets/", include("tickets.urls")),
 ]

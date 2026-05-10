@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% load bootstrap5 %}
+
+{% block title %}Tickets — Ticket System{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h1 class="h3 mb-0">Tickets</h1>
+  <a href="{% url 'tickets:create' %}" class="btn btn-primary">Raise ticket</a>
+</div>
+
+{% if user.is_manager %}
+  <div class="btn-group mb-3" role="group" aria-label="Scope filter">
+    <a href="?scope=all"
+       class="btn btn-outline-secondary {% if scope != 'mine' %}active{% endif %}">
+      Everyone's tickets
+    </a>
+    <a href="?scope=mine"
+       class="btn btn-outline-secondary {% if scope == 'mine' %}active{% endif %}">
+      My tickets only
+    </a>
+  </div>
+{% endif %}
+
+{% if tickets %}
+  <div class="table-responsive">
+    <table class="table table-hover align-middle">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Name</th>
+          <th>Area</th>
+          <th>Severity</th>
+          <th>Status</th>
+          <th>Submitted by</th>
+          <th>Created</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for ticket in tickets %}
+          <tr style="cursor:pointer" onclick="window.location='{% url 'tickets:detail' ticket.pk %}'">
+            <td>{{ ticket.pk }}</td>
+            <td>{{ ticket.name }}</td>
+            <td>{{ ticket.get_area_display }}</td>
+            <td>{{ ticket.get_severity_display }}</td>
+            <td>
+              <span class="badge bg-{% if ticket.status == 'opened' %}secondary{% elif ticket.status == 'assigned' %}info{% elif ticket.status == 'working' %}warning text-dark{% else %}success{% endif %}">
+                {{ ticket.get_status_display }}
+              </span>
+            </td>
+            <td>{{ ticket.submitted_by.username }}</td>
+            <td>{{ ticket.created_at|date:"Y-m-d H:i" }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  {% if is_paginated %}
+    {% bootstrap_pagination page_obj %}
+  {% endif %}
+
+{% else %}
+  <p class="text-muted">No tickets to show.</p>
+{% endif %}
+{% endblock %}
