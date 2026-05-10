@@ -28,4 +28,5 @@ jobs:
         ruff check --output-format=github
     - name: Test 
       run: |
+        cd devOpsAssignment
         pytest
