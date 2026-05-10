@@ -6,6 +6,30 @@
     {% bootstrap_css %}
 </head>
 <body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
+    <div class="container">
+      <a class="navbar-brand" href="{% if user.is_authenticated %}{% url 'tickets:list' %}{% else %}{% url 'users:login' %}{% endif %}">
+        Ticket System
+      </a>
+      <ul class="navbar-nav ms-auto">
+        {% if user.is_authenticated %}
+          <li class="nav-item"><a class="nav-link" href="{% url 'tickets:list' %}">Tickets</a></li>
+          <li class="nav-item"><a class="nav-link" href="{% url 'tickets:create' %}">New ticket</a></li>
+          <li class="nav-item">
+            <span class="nav-link disabled">{{ user.username }} ({{ user.get_role_display }})</span>
+          </li>
+          <li class="nav-item">
+            <form method="post" action="{% url 'users:logout' %}" class="d-inline">
+              {% csrf_token %}
+              <button type="submit" class="btn btn-outline-light btn-sm mt-1">Log out</button>
+            </form>
+          </li>
+        {% else %}
+          <li class="nav-item"><a class="nav-link" href="{% url 'users:login' %}">Log in</a></li>
+        {% endif %}
+      </ul>
+    </div>
+  </nav>
   <main class="container">
     {% if messages %}
       {% bootstrap_messages %}
