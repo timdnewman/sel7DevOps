@@ -1,7 +1,9 @@
-{"image":"mcr.microsoft.com/devcontainers/universal:2",
+{"name": "AssignementContainer",
+  "image":"mcr.microsoft.com/devcontainers/universal:2",
 "features":{
-  "ghcr.io/devcontainers/features/azure-cli:1": {},
-  "ghcr.io/devcontainers/features/terraform:1": {},
-  "ghcr.io/prulloac/devcontainer-features/pre-commit:1": {}
-}
+  "ghcr.io/devcontainers/features/azure-cli:1": {"version": "latest"},
+  "ghcr.io/devcontainers/features/terraform:1": {"version": "latest"},
+  "ghcr.io/prulloac/devcontainer-features/pre-commit:1": {"version": "latest"},
+  "ghcr.io/devcontainers/features/docker-in-docker:1": {"version": "latest","moby": true}
+  }
 }
