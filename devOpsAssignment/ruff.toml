@@ -14,4 +14,3 @@ select = [
     "I",
 ]
 ignore = ["E501"]
-builtins = [".settings"]
