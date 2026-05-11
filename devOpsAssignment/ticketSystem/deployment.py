@@ -5,9 +5,12 @@ from .settings import BASE_DIR
 
 # The settings file for deployment
 
-ALLOWED_HOSTS = [os.environ["WEBSITE_HOSTNAME"]]
+SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY", "dev-only-key")
+hostname = os.environ["WEBSITE_HOSTNAME"]
 
-CSRF_TRUSTED_ORIGINS = ["https://" + os.environ["WEBSITE_HOSTNAME"]]
+ALLOWED_HOSTS = [hostname]
+
+CSRF_TRUSTED_ORIGINS = ["https://" + hostname]
 
 DEBUG = False
 
@@ -22,6 +25,8 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
+
+STATIC_URL = "/static/"
 STATICFILES_STORAGE = "whitenoise.storage.CampressedManifestStaticFilesStorage"
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 
@@ -38,5 +43,7 @@ DATABASES = {
         "HOST": connection_params["host"],
         "USER": connection_params["user"],
         "PASSWORD": connection_params["password"],
+        "PORT": connection_params["port"] or 5432,
+        "OPTIONS": {"sslmode": "require"},
     }
 }
