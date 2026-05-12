@@ -28,7 +28,6 @@ SECRET_KEY = os.environ.get(
 
 # SECURITY WARNING: If there is a debug env var then use that (the equality acts to convert it to a bool)
 DEBUG = os.environ.get("DJANGO_DEBUG", "true").lower() == "true"
-print(DEBUG, SECRET_KEY)
 
 if not DEBUG and SECRET_KEY.startswith("django-insecure-"):
     raise RuntimeError("DJANGO_SECRET_KEY must be changed for prod (DEBUG is True)")
@@ -163,3 +162,20 @@ STATIC_URL = "static/"
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "handlers": {
+        "console": {
+            "class": "logging.StreamHandler",
+        },
+    },
+    "loggers": {
+        "django.request": {
+            "handlers": ["console"],
+            "level": "ERROR",
+            "propagate": False,
+        },
+    },
+}
