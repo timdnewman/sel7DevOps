@@ -1,8 +1,6 @@
 name: Python application
-on: 
+on:
   push:
-    branches:
-    - main
   pull_request:
     branches:
     - main
@@ -26,7 +24,7 @@ jobs:
     - name: Ruff
       run: |
         ruff check --output-format=github
-    - name: Test 
+    - name: Test
       run: |
         cd devOpsAssignment
         pytest
