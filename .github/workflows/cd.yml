@@ -36,26 +36,44 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Trigger codespace redeploy
+      - name: Write deploy.env on the runner
+        env:
+          POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+          POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
+          DJANGO_SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
+          TICKETSYSTEM_USERNAME: ${{ secrets.TICKETSYSTEM_USERNAME }}
+          TICKETSYSTEM_EMAIL: ${{ secrets.TICKETSYSTEM_EMAIL }}
+          TICKETSYSTEM_PASSWORD: ${{ secrets.TICKETSYSTEM_PASSWORD }}
+          TICKETSYSTEM_FIRST_NAME: ${{ secrets.TICKETSYSTEM_FIRST_NAME }}
+          TICKETSYSTEM_LAST_NAME: ${{ secrets.TICKETSYSTEM_LAST_NAME }}
+          TICKETSYSTEM_ROLE: ${{ secrets.TICKETSYSTEM_ROLE }}
+          TICKETSYSTEM_SUPE_FLAG: ${{ secrets.TICKETSYSTEM_SUPE_FLAG }}
+        run: |
+          {
+            echo "POSTGRES_USER=$POSTGRES_USER"
+            echo "POSTGRES_PASSWORD=$POSTGRES_PASSWORD"
+            echo "POSTGRES_DB=$POSTGRES_DB"
+            echo "DJANGO_SECRET_KEY=$DJANGO_SECRET_KEY"
+            echo "TICKETSYSTEM_USERNAME=$TICKETSYSTEM_USERNAME"
+            echo "TICKETSYSTEM_EMAIL=$TICKETSYSTEM_EMAIL"
+            echo "TICKETSYSTEM_PASSWORD=$TICKETSYSTEM_PASSWORD"
+            echo "TICKETSYSTEM_FIRST_NAME=$TICKETSYSTEM_FIRST_NAME"
+            echo "TICKETSYSTEM_LAST_NAME=$TICKETSYSTEM_LAST_NAME"
+            echo "TICKETSYSTEM_ROLE=$TICKETSYSTEM_ROLE"
+            echo "TICKETSYSTEM_SUPE_FLAG=$TICKETSYSTEM_SUPE_FLAG"
+          } > deploy.env
+
+      - name: Copy deploy.env to codespace and redeploy
         env:
           GH_TOKEN: ${{ secrets.CODESPACE_PAT }}
           CODESPACE_NAME: ${{ secrets.CODESPACE_NAME }}
+          REPO_NAME: ${{ github.event.repository.name }}
         run: |
+          gh codespace cp -e -c "$CODESPACE_NAME" deploy.env "remote:/workspaces/$REPO_NAME/.env"
+
           gh codespace ssh -c "$CODESPACE_NAME" -- "
-            cd /workspaces/\$(basename '${{ github.repository }}') &&
-            cat > .env <<ENVFILE
-          POSTGRES_USER=${{ secrets.POSTGRES_USER }}
-          POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}
-          POSTGRES_DB=${{ secrets.POSTGRES_DB }}
-          DJANGO_SECRET_KEY=${{ secrets.DJANGO_SECRET_KEY }}
-          TICKETSYSTEM_EMAIL=${{ secrets.TICKETSYSTEM_EMAIL }}
-          TICKETSYSTEM_FIRST_NAME=${{ secrets.TICKETSYSTEM_FIRST_NAME }}
-          TICKETSYSTEM_LAST_NAME=${{ secrets.TICKETSYSTEM_LAST_NAME }}
-          TICKETSYSTEM_PASSWORD=${{ secrets.TICKETSYSTEM_PASSWORD }}
-          TICKETSYSTEM_ROLE=${{ secrets.TICKETSYSTEM_ROLE }}
-          TICKETSYSTEM_SUPE_FLAG=${{ secrets.TICKETSYSTEM_SUPE_FLAG }}
-          TICKETSYSTEM_USERNAME=${{ secrets.TICKETSYSTEM_USERNAME }}
-          ENVFILE
+            cd /workspaces/$REPO_NAME &&
             docker compose pull &&
             docker compose up -d --force-recreate
           "
