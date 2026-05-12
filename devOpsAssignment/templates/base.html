@@ -4,9 +4,11 @@
 <head>
     <title>{% block title %}Ticket System{% endblock %}</title>
     {% bootstrap_css %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/custom.css' %}">
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
+    <nav class="navbar navbar-expand-lg navbar-custom">
     <div class="container">
       <a class="navbar-brand" href="{% if user.is_authenticated %}{% url 'tickets:list' %}{% else %}{% url 'users:login' %}{% endif %}">
         Ticket System
