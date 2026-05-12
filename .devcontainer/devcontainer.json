@@ -7,5 +7,5 @@
   "ghcr.io/devcontainers/features/docker-in-docker:2": {},
   "ghcr.io/devcontainers/features/sshd:1": {"version": "latest"}
   },
-  "postStartCommand": "sudo service ssh start"
+   "postStartCommand": "sudo service ssh start && echo $GITHUB_TOKEN | docker login ghcr.io -u $GITHUB_USER --password-stdin"
 }
