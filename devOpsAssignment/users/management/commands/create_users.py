@@ -31,7 +31,9 @@ class Command(BaseCommand):
         user_list = list(
             zip(unames, pwds, emails, roles, fnames, lnames, supeflags, strict=True)
         )
-
+        self.stdout.write(
+            f"un {len(unames)}, pw: {len(pwds)}, em {len(emails)}, role {len(roles)}, fn {len(fnames)}, ln {len(lnames)}, su {len(supeflags)}"
+        )
         for uname, pwd, email, role, fname, lname, supeflag in user_list:
             with transaction.atomic():
                 user, created = User.objects.get_or_create(username=uname)
