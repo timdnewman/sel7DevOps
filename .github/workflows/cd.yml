@@ -48,6 +48,7 @@ jobs:
           TICKETSYSTEM_FIRST_NAME: ${{ secrets.TICKETSYSTEM_FIRST_NAME }}
           TICKETSYSTEM_LAST_NAME: ${{ secrets.TICKETSYSTEM_LAST_NAME }}
           TICKETSYSTEM_ROLE: ${{ secrets.TICKETSYSTEM_ROLE }}
+          TICKETSYSTEM_SUPE_FLAG: ${{ secrets.TICKETSYSTEM_SUPE_FLAG }}
           CODESPACE_NAME: ${{ secrets.CODESPACE_NAME }}
         run: |
           {
