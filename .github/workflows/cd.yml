@@ -48,9 +48,13 @@ jobs:
           POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}
           POSTGRES_DB=${{ secrets.POSTGRES_DB }}
           DJANGO_SECRET_KEY=${{ secrets.DJANGO_SECRET_KEY }}
-          DJANGO_SUPERUSER_USERNAME=${{ secrets.DJANGO_SUPERUSER_USERNAME }}
-          DJANGO_SUPERUSER_EMAIL=${{ secrets.DJANGO_SUPERUSER_EMAIL }}
-          DJANGO_SUPERUSER_PASSWORD=${{ secrets.DJANGO_SUPERUSER_PASSWORD }}
+          TICKETSYSTEM_EMAIL=${{ secrets.TICKETSYSTEM_EMAIL }}
+          TICKETSYSTEM_FIRST_NAME=${{ secrets.TICKETSYSTEM_FIRST_NAME }}
+          TICKETSYSTEM_LAST_NAME=${{ secrets.TICKETSYSTEM_LAST_NAME }}
+          TICKETSYSTEM_PASSWORD=${{ secrets.TICKETSYSTEM_PASSWORD }}
+          TICKETSYSTEM_ROLE=${{ secrets.TICKETSYSTEM_ROLE }}
+          TICKETSYSTEM_SUPE_FLAG=${{ secrets.TICKETSYSTEM_SUPE_FLAG }}
+          TICKETSYSTEM_USERNAME=${{ secrets.TICKETSYSTEM_USERNAME }}
           ENVFILE
             docker compose pull &&
             docker compose up -d --force-recreate
