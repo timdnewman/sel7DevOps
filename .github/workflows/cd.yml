@@ -48,7 +48,7 @@ jobs:
           TICKETSYSTEM_FIRST_NAME: ${{ secrets.TICKETSYSTEM_FIRST_NAME }}
           TICKETSYSTEM_LAST_NAME: ${{ secrets.TICKETSYSTEM_LAST_NAME }}
           TICKETSYSTEM_ROLE: ${{ secrets.TICKETSYSTEM_ROLE }}
-          TICKETSYSTEM_SUPE_FLAG: ${{ secrets.TICKETSYSTEM_SUPE_FLAG }}
+          CODESPACE_NAME: ${{ secrets.CODESPACE_NAME }}
         run: |
           {
             echo "POSTGRES_USER=$POSTGRES_USER"
@@ -62,6 +62,8 @@ jobs:
             echo "TICKETSYSTEM_LAST_NAME=$TICKETSYSTEM_LAST_NAME"
             echo "TICKETSYSTEM_ROLE=$TICKETSYSTEM_ROLE"
             echo "TICKETSYSTEM_SUPE_FLAG=$TICKETSYSTEM_SUPE_FLAG"
+            echo "CODESPACE_NAME=$CODESPACE_NAME"
+            echo "GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN=app.github.dev"
           } > deploy.env
 
       - name: Copy deploy.env to codespace and redeploy
