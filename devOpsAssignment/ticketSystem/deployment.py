@@ -1,7 +1,6 @@
 import os
 
 from .settings import *
-from .settings import BASE_DIR
 
 # The settings file for deployment
 
@@ -25,10 +24,6 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
-
-STATIC_URL = "/static/"
-STATICFILES_STORAGE = "whitenoise.storage.CampressedManifestStaticFilesStorage"
-STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 
 connection_string = os.environ["AZURE_POSTGRESQL_CONNECTIONSTRING"]
 

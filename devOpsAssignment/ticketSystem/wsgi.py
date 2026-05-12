@@ -11,11 +11,11 @@ import os
 
 from django.core.wsgi import get_wsgi_application
 
-if "WEBSITE_HOSTNAME" in os.environ:
-    settings_module = "ticketSystem.deployment"
-else:
-    settings_module = "ticketSystem.settings"
+# if "WEBSITE_HOSTNAME" in os.environ:
+#     settings_module = "ticketSystem.deployment"
+# else:
+#     settings_module = "ticketSystem.settings"
 
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "settings_module")
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "ticketSystem.settings")
 
 application = get_wsgi_application()
