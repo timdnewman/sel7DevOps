@@ -28,7 +28,9 @@ class Command(BaseCommand):
         lnames = os.environ.get(self.envvars["lnames"]).split(";")
         supeflags = os.environ.get(self.envvars["supeflags"]).split(";")
 
-        user_list = zip([unames, pwds, emails, roles, fnames, lnames, supeflags])
+        user_list = list(
+            zip(unames, pwds, emails, roles, fnames, lnames, supeflags, strict=True)
+        )
 
         for uname, pwd, email, role, fname, lname, supeflag in user_list:
             with transaction.atomic():
@@ -38,7 +40,7 @@ class Command(BaseCommand):
                     self.stdout.write(
                         self.style.WARNING(f"User '{uname}' already exists; skipping. ")
                     )
-                    return
+                    continue
 
                 user.email = email
                 user.first_name = fname
@@ -50,4 +52,6 @@ class Command(BaseCommand):
                 user.set_password(pwd)
                 user.save()
 
-            self.stdout.write(self.style.SUCCESS(f"{role} '{uname}' created"))
+                self.stdout.write(self.style.SUCCESS(f"{role} '{uname}' created"))
+
+        return

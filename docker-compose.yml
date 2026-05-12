@@ -27,6 +27,26 @@ services:
         condition: service_healthy
     restart: "no"
 
+  bootstrap-admin:
+    build: .
+    command: ["python", "manage.py", "create_users"]
+    environment:
+      DJANGO_SECRET_KEY: ${DJANGO_SECRET_KEY}
+      DJANGO_DEBUG: "false"
+      DJANGO_ALLOWED_HOSTS: "localhost,127.0.0.1"
+      DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}
+      TICKETSYSTEM_USERNAME: ${TICKETSYSTEM_USERNAME}
+      TICKETSYSTEM_PASSWORD: ${TICKETSYSTEM_PASSWORD}
+      TICKETSYSTEM_EMAIL: ${TICKETSYSTEM_EMAIL}
+      TICKETSYSTEM_ROLE: ${TICKETSYSTEM_ROLE}
+      TICKETSYSTEM_FIRST_NAME: ${TICKETSYSTEM_FIRST_NAME}
+      TICKETSYSTEM_LAST_NAME: ${TICKETSYSTEM_LAST_NAME}
+      TICKETSYSTEM_SUPE_FLAG: ${TICKETSYSTEM_SUPE_FLAG}
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+    restart: "no"
+
   app:
     build: .
     restart: unless-stopped
@@ -38,7 +58,7 @@ services:
     ports:
       - "8000:8000"
     depends_on:
-      migrate:
+      bootstrap-admin:
         condition: service_completed_successfully
 
 volumes:
