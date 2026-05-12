@@ -65,6 +65,7 @@ jobs:
             echo "TICKETSYSTEM_SUPE_FLAG=$TICKETSYSTEM_SUPE_FLAG"
             echo "CODESPACE_NAME=$CODESPACE_NAME"
             echo "GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN=app.github.dev"
+            echo "GITHUB_REPOSITORY=$GITHUB_REPOSITORY"
           } > deploy.env
 
       - name: Copy deploy.env to codespace and redeploy
@@ -78,5 +79,5 @@ jobs:
           gh codespace ssh -c "$CODESPACE_NAME" -- "
             cd /workspaces/$REPO_NAME &&
             docker compose pull &&
-            docker compose up -d --force-recreate
+            docker compose up -d --force-recreate --pull always
           "
