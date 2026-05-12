@@ -27,7 +27,11 @@ SECRET_KEY = os.environ.get(
 )
 
 # SECURITY WARNING: If there is a debug env var then use that (the equality acts to convert it to a bool)
-DEBUG = os.environ.get("DJANGO_DEBUG", "false").lower() == "true"
+DEBUG = os.environ.get("DJANGO_DEBUG", "true").lower() == "true"
+print(DEBUG, SECRET_KEY)
+
+if not DEBUG and SECRET_KEY.startswith("django-insecure-"):
+    raise RuntimeError("DJANGO_SECRET_KEY must be changed for prod (DEBUG is True)")
 
 ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS", "localhost,127.0.0.1").split(",")
 
@@ -102,9 +106,15 @@ else:
         }
     }
 
-
+STORAGES = {
+    "default": {
+        "BACKEND": "django.core.files.storage.FileSystemStorage",
+    },
+    "staticfiles": {
+        "default": "whitenoise.storage.CompressedManifestStaticFilesStorage"
+    },
+}
 STATIC_URL = "/static/"
-STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 
 AUTH_USER_MODEL = "users.User"
