@@ -28,4 +28,5 @@ urlpatterns = [
     ),
     path("accounts/", include("users.urls")),
     path("tickets/", include("tickets.urls")),
+    path("health/", health, name="health"),
 ]

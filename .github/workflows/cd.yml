@@ -85,7 +85,7 @@ jobs:
       needs: deploy
       runs-on: ubuntu-latest
       steps:
-        - name: Run Newman inside the codespace
+        - name: Postman (Newman) smoke test (does the login page return 200)
           env:
             GH_TOKEN: ${{ secrets.CODESPACE_PAT }}
             CODESPACE_NAME: ${{ secrets.CODESPACE_NAME }}
