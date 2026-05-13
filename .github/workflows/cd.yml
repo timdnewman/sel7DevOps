@@ -81,3 +81,23 @@ jobs:
             docker compose pull &&
             docker compose up -d --force-recreate --pull always
           "
+  smoke-test:
+      needs: deploy
+      runs-on: ubuntu-latest
+      steps:
+        - name: Run Newman inside the codespace
+          env:
+            GH_TOKEN: ${{ secrets.CODESPACE_PAT }}
+            CODESPACE_NAME: ${{ secrets.CODESPACE_NAME }}
+            REPO_NAME: ${{ github.event.repository.name }}
+          run: |
+            gh codespace ssh -c "$CODESPACE_NAME" -- "
+              cd /workspaces/$REPO_NAME &&
+              docker run --rm \
+                --network ${REPO_NAME}_default \
+                -v \$(pwd)/postman:/etc/newman \
+                postman/newman:alpine \
+                run /etc/newman/smoke.postman_collection.json \
+                  --env-var BASE_URL=http://instance1:8000 \
+                  --reporters cli
+            "
