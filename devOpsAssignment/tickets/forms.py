@@ -4,7 +4,6 @@ from .models import Ticket
 
 
 class TicketForm(forms.ModelForm):
-
     class Meta:
         model = Ticket
         fields = ["name", "area", "severity", "description"]
@@ -21,9 +20,7 @@ class TicketForm(forms.ModelForm):
     def clean_description(self):
         description = self.cleaned_data["description"].strip()
         if len(description) < 20:
-            raise forms.ValidationError(
-                "Description must be at least 20 characters"
-            )
+            raise forms.ValidationError("Description must be at least 20 characters")
         return description
 
 
